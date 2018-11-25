@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter, WeekdayLocator, DayLocator, MONDAY, date2num
 from mpl_finance import candlestick_ohlc
+from pylab import mpl
 from datetime import datetime
 
 class SdpsDs(object):
@@ -25,9 +26,10 @@ class SdpsDs(object):
         ax.xaxis.set_major_locator(mondays)
         ax.xaxis.set_minor_locator(DayLocator())
         ax.xaxis.set_major_formatter(weekFormatter)
+        plt.rcParams['font.family'] = 'sans-serif'
         plt.rcParams['font.sans-serif'] = ['SimHei']
         plt.rcParams['axes.unicode_minus'] = False
-        ax.set_title('上证综指K线图', fontproperties='SimSun')
+        ax.set_title(u'上证综指kline picture')
         candlestick_ohlc(ax, recs, width=0.7, colorup='r', colordown='g')
         plt.setp(plt.gca().get_xticklabels(), rotation=50, horizontalalignment='center')
         plt.show()
