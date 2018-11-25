@@ -2,6 +2,9 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter, WeekdayLocator, DayLocator, MONDAY, date2num
+from matplotlib.finance import candlestick_ohlc
+from datetime import datetime
 
 class SdpsDs(object):
     def __init__(self):
@@ -12,4 +15,19 @@ class SdpsDs(object):
         print('绘制股票每日价格K线图')
         datas = pd.read_csv('dataset_2.csv')
         datas = datas.iloc[:, 1:]
-        print(datas.iloc[-30:, :])
+        datas.Date = [date2num( datetime.strptime(date, '%Y-%m-%d') ) for date in datas.Date]
+        recs = list()
+        for i in range(len(datas)):
+            recs.append(datas.iloc[i, :])
+        ax = plot.subplot()
+        mondays = WeekdayLocator(MONDAY)
+        weekFormatter = DateFormatter('%y %b %d')
+        ax.xaxis.set_major_locator(mondays)
+        ax.xaxis.set_minor_location(DayLocator())
+        ax.xaxis.set_major_formatter(weekFormatter)
+        plt.rcParams['font.sans-serif'] = ['SimHei']
+        plt.rcParams['axes.unicode_minus'] = False
+        ax.set_title('上证综指K线图')
+        candlestick_ohlc(ax, recs, width=0.7, colorup='r', colordown='g')
+        plt.setp(plt.gca().get_xticklabels(), rotation=50, horizatalalignment='center')
+        plt.show()
