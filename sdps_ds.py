@@ -8,8 +8,37 @@ from pylab import mpl
 from datetime import datetime
 
 class SdpsDs(object):
+    ds_file = 'dataset_2.csv'
+    
     def __init__(self):
         self.cls_name = 'SdpsDs'
+       
+    @staticmethod
+    def get_train_ds(batch_size=60,time_step=20,train_begin=0,train_end=5800):
+        '''
+        获取训练样本集
+        '''
+        data = SdpsDs.initialize_data()
+        batch_index = []
+        data_train = data[train_begin:train_end]
+        normalized_train_data=(data_train-np.mean(data_train,axis=0))/np.std(data_train,axis=0)  #标准化
+        train_x,train_y=[],[]   #训练集
+        for i in range(len(normalized_train_data)-time_step):
+           if i % batch_size==0:
+               batch_index.append(i)
+           x=normalized_train_data[i:i+time_step,:7]
+           y=normalized_train_data[i:i+time_step,7,np.newaxis]
+           train_x.append(x.tolist())
+           train_y.append(y.tolist())
+        batch_index.append((len(normalized_train_data)-time_step))
+        return batch_index,train_x,train_y
+        
+    @staticmethod
+    def initialize_data():
+        with open(SdpsDs.ds_file) as fd:
+            df = pd.read_csv(fd)     #读入股票数据
+            data = df.iloc[:,2:10].values  #取第3-10列
+        return data
 
     @staticmethod
     def draw_kline():
