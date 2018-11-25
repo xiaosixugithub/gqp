@@ -29,7 +29,7 @@ class SdpsDs(object):
         plt.rcParams['font.family'] = 'sans-serif'
         plt.rcParams['font.sans-serif'] = ['SimHei']
         plt.rcParams['axes.unicode_minus'] = False
-        ax.set_title(u'上证综指kline picture')
+        ax.set_title(u'上证综指k线图')
         candlestick_ohlc(ax, recs, width=0.7, colorup='r', colordown='g')
         plt.setp(plt.gca().get_xticklabels(), rotation=50, horizontalalignment='center')
         plt.show()
