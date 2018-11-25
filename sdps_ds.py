@@ -14,7 +14,7 @@ class SdpsDs(object):
     @staticmethod
     def draw_kline():
         print('绘制股票每日价格K线图')
-        raw_datas = pd.read_csv('dataset_2.csv')
+        raw_datas = pd.read_csv('kline.csv')
         datas = raw_datas.iloc[-30:, 1:]
         datas.date = [date2num( datetime.strptime(date, '%Y/%m/%d') ) for date in datas.date]
         recs = list()
