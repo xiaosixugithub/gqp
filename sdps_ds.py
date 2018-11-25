@@ -34,7 +34,32 @@ class SdpsDs(object):
         return batch_index,train_x,train_y
         
     @staticmethod
+    def get_test_ds(time_step=20,test_begin=5800):
+        '''
+        获取训练样本集
+        '''
+        data = SdpsDs.initialize_data()
+        data_test=data[test_begin:]
+        mean=np.mean(data_test,axis=0)
+        std=np.std(data_test,axis=0)
+        normalized_test_data=(data_test-mean)/std  #标准化
+        size=(len(normalized_test_data)+time_step-1)//time_step  #有size个sample
+        test_x,test_y=[],[]
+        for i in range(size-1):
+           x=normalized_test_data[i*time_step:(i+1)*time_step,:7]
+           y=normalized_test_data[i*time_step:(i+1)*time_step,7]
+           test_x.append(x.tolist())
+           test_y.extend(y)
+        test_x.append((normalized_test_data[(i+1)*time_step:,:7]).tolist())
+        test_y.extend((normalized_test_data[(i+1)*time_step:,7]).tolist())
+        return mean,std,test_x,test_y
+
+        
+    @staticmethod
     def initialize_data():
+        '''
+        从原始数据文件中读出股票数据
+        '''
         with open(SdpsDs.ds_file) as fd:
             df = pd.read_csv(fd)     #读入股票数据
             data = df.iloc[:,2:10].values  #取第3-10列

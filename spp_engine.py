@@ -11,7 +11,7 @@ class SppEngine(object):
     def startup(self):
         print('股票价格预测引擎......')
         #SdpsDs.draw_kline()
-        batch_index,train_x,train_y = SdpsDs.get_train_data()
-        print(batch_index)
-        print(train_x)
-        print(train_y)
+        mean,std,test_x,test_y = SdpsDs.get_test_ds()
+        print(test_x)
+        print(test_y)
+        print('mean={0}, {1}!'.format(mean, std))
