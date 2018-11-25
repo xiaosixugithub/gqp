@@ -10,3 +10,7 @@ class SdpsDs(object):
     @staticmethod
     def draw_kline():
         print('绘制股票每日价格K线图')
+        datas = pd.read_csv('dataset_2.csv')
+        datas = datas.iloc[:, 1:]
+        print(datas[-30:, :])
+        
