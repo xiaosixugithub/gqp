@@ -11,4 +11,5 @@ class SppEngine(object):
 
     def startup(self):
         print('股票价格预测引擎......')
-        Lstm.initialize()
+        Lstm.train()
+        Lstm.predict()
