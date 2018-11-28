@@ -32,7 +32,7 @@ class BtcEcc(object):
         ask_item = order_books['asks'][0]
         return ask_item[0], ask_item[1]
 
-if '__main__' == __name__:
+def test1():
     bte = 'BTC/USDT'
     etb = 'USDT/BTC'
     symbol = bte
@@ -61,3 +61,20 @@ if '__main__' == __name__:
     buy_btc_order = exchange.create_limit_buy_order(symbol, 0.001, bid_price)
     print('buy_order: {0}!'.format(buy_btc_order))
 
+def test2():
+    bte = 'BTC/USDT'
+    symbol = bte
+    exchange = BtcEcc.get_exchange('huobipro', '356cda29-253918bb-573a5afa-eeeae', 'a80d3cfd-4db6c763-0b73daee-cba31')
+    buy_maker_fee = exchange.calculate_fee(symbol, 'limit', 'buy', 0.001, 3988.8, takerOrMaker='maker')
+    buy_taker_fee = exchange.calculate_fee(symbol, 'limit', 'buy', 0.001, 3988.8, takerOrMaker='taker')
+    sell_maker_fee = exchange.calculate_fee(symbol, 'limit', 'sell', 0.001, 3988.8, takerOrMaker='maker')
+    sell_taker_fee = exchange.calculate_fee(symbol, 'limit', 'sell', 0.001, 3988.8, takerOrMaker='taker')
+    print('buy_maker_fee={0} [{4}], buy_taker_fee={1} [{5}], sell_maker_fee={2} [{6}], sell_taker_fee={3} [{7}]!'.format(buy_maker_fee['cost'], buy_taker_fee['cost'], sell_maker_fee['cost'], sell_taker_fee['cost'], buy_maker_fee['currency'], buy_taker_fee['currency'], sell_maker_fee['currency'], sell_taker_fee['currency']))
+
+
+def main():
+    #test1()
+    test2()
+
+if '__main__' == __name__:
+    main()
