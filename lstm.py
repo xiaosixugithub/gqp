@@ -10,10 +10,10 @@ import tensorflow as tf
 from sdps_ds import SdpsDs
 
 class Lstm(object):
-    rnn_unit = 10         #隐层神经元的个数
-    lstm_layers = 2       #隐层层数
-    input_size = 7
-    output_size = 1
+    rnn_unit = 10         # 隐层神经元的个数
+    lstm_layers = 2       # 隐层层数
+    input_size = 7        # 输入层神经元个数
+    output_size = 1       # 输出层神经元个数
     lr = 0.0006         #学习率
     weights={
          'in':tf.Variable(tf.random_normal([input_size,rnn_unit])),
@@ -65,14 +65,12 @@ class Lstm(object):
 
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
-            for i in range(10):     #这个迭代次数，可以更改，越大预测效果会更好，但需要更长时间
+            for i in range(10):     
                 for step in range(len(batch_index)-1):
                     _,loss_= sess.run([train_op, loss],feed_dict={X:train_x[batch_index[step]:batch_index[step+1]],Y:train_y[batch_index[step]:batch_index[step+1]], Lstm.keep_prob:0.5})
                 print("Number of iterations:",i," loss:",loss_)
-            print("model_save: ",saver.save(sess,'./model_save2/modle.ckpt'))
-            #I run the code on windows 10,so use  'model_save2\\modle.ckpt'
-            #if you run it on Linux,please use  'model_save2/modle.ckpt'
-            print("The train has finished")
+            print("保存模型参数: ",saver.save(sess,'./model_save2/modle.ckpt'))
+            print("模型训练结束")
             
             
             
@@ -97,7 +95,7 @@ class Lstm(object):
             test_y = np.array(test_y)*std[7]+mean[7]
             test_predict = np.array(test_predict)*std[7]+mean[7]
             acc = np.average(np.abs(test_predict-test_y[:len(test_predict)])/test_y[:len(test_predict)])  #偏差程度
-            print("The accuracy of this predict:",acc)
+            print("测试样本集精度:",acc)
             #以折线图表示结果
             plt.figure()
             plt.plot(list(range(len(test_predict))), test_predict, color='b',)
