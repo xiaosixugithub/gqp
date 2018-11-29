@@ -78,7 +78,7 @@ class BtcEcc(object):
         item.append(-1.0)
         if idx > 0:
             items[idx-1][len(items[idx-1])-1] = ticker[bidOrAsk]
-            sample_file.write(BtcEcc.convert_item_to_str(items[idx-1]))
+            sample_file.write(','.join(list(map(str, items[idx-1]))) + '\r\n')
         items.append(item)
 
     @staticmethod
