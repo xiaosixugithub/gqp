@@ -39,29 +39,20 @@ class BtcEcc(object):
         '''
         bid_file = open('bid.txt', 'w', encoding='utf8')
         ask_file = open('ask.txt', 'w', encoding='utf8')
-        bids = []
-        asks = []
+        bid_prev_item = None
+        ask_prev_item = None
         idx = 0
         for i in range(5):
             ticker = exchange.fetch_ticker(symbol)
-            BtcEcc.fill_price_item(bid_file, ticker, bids, idx, 'bid')
-            BtcEcc.fill_price_item(ask_file, ticker, asks, idx, 'ask')
+            bid_prev_item = BtcEcc.fill_price_item(bid_file, ticker, bid_prev_item, idx, 'bid')
+            ask_prev_item = BtcEcc.fill_price_item(ask_file, ticker, ask_prev_item, idx, 'ask')
             idx += 1
             time.sleep(0.1)
-
-        print('v1 bid price:')
-        for item in bids:
-            print(item)
-
-        print('ask price:')
-        for ia in asks:
-            print(ia)
-
         bid_file.close()
         ask_file.close()
 
     @staticmethod
-    def fill_price_item(sample_file, ticker, items, idx, bidOrAsk):
+    def fill_price_item(sample_file, ticker, prev_item, idx, bidOrAsk):
         item = []
         item.append(ticker['high'])
         item.append(ticker['low'])
@@ -77,9 +68,9 @@ class BtcEcc(object):
         item.append(ticker['quoteVolume'])
         item.append(-1.0)
         if idx > 0:
-            items[idx-1][len(items[idx-1])-1] = ticker[bidOrAsk]
-            sample_file.write(','.join(list(map(str, items[idx-1]))) + '\r\n')
-        items.append(item)
+            prev_item[len(prev_item)-1] = ticker[bidOrAsk]
+            sample_file.write(','.join(list(map(str, prev_item))) + '\r\n')
+        return item
 
     @staticmethod
     def convert_item_to_str(item):
